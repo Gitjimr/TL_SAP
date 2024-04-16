@@ -121,7 +121,10 @@ if uploaded_file is not None:
 
         ## Ler a tabela específica da planilha
 
-        tabela = pd.read_excel( uploaded_file, sheet_name="EQUIPAMENTOS-AZ", skiprows=0, dtype=str)
+        try:
+            tabela = pd.read_excel( uploaded_file, sheet_name="EQUIPAMENTOS", skiprows=0, dtype=str)
+        except:
+            tabela = pd.read_excel( uploaded_file, sheet_name="EQUIPAMENTOS-AZ", skiprows=0, dtype=str)
 
         ## Ler a tabela op_padrao verificando a linha em que se encontra o cabeçalho
 
