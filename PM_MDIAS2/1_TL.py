@@ -1701,7 +1701,7 @@ if uploaded_file is not None:
             st.download_button(
                 label="Download "+nome_arquivo_sap,
                 data=buffer,
-                file_name=nome_arquivo_sap+'.xlsx,
+                file_name=nome_arquivo_sap+'.xlsx',
             )
 
             ###
