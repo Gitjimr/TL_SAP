@@ -75,6 +75,7 @@ try:
                 "Denominação do objeto técnico"].map(str, na_action='ignore')
             SAP_EQP = pd.DataFrame(SAP_EQP)
             st.session_state.SAP_EQP = SAP_EQP
+    SAP_EQP = st.session_state['SAP_EQP']
 except:
     pass
 
@@ -85,6 +86,7 @@ try:
             SAP_TL['CONCAT CENTRO_DESC'] = SAP_TL["Centro planejamento"].map(str, na_action=None) + SAP_TL["Descrição"].map(str,na_action='ignore')
             SAP_TL = pd.DataFrame(SAP_TL)
             st.session_state.SAP_TL = SAP_TL
+    SAP_TL = st.session_state['SAP_TL']
 except:
     pass
 
@@ -98,13 +100,12 @@ try:
 
             SAP_PMI = pd.DataFrame(SAP_PMI)
             st.session_state.SAP_PMI = SAP_PMI
+    SAP_PMI = st.session_state['SAP_PMI']
 except:
     pass
 
 
-SAP_EQP = st.session_state['SAP_EQP']
-SAP_TL = st.session_state['SAP_TL']
-SAP_PMI = st.session_state['SAP_PMI']
+
 
 #*-*-*-*-OK ACIMA
 
