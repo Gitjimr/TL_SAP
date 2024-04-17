@@ -111,9 +111,9 @@ if uploaded_file1 is not None and uploaded_file2 is not None:
             df_cabecalhos_pm_i = df_cabecalhos_pm_i[pd.notna(df_cabecalhos_pm_i['Chave do grupo de listas de tarefas*'])].copy().reset_index(drop=True).loc[:, ~df_cabecalhos_pm_i.columns.str.contains('^Unnamed')]
             
             if i == 0:
-            df_cabecalhos_pm = df_cabecalhos_pm_i
+                df_cabecalhos_pm = df_cabecalhos_pm_i
             else:
-            df_cabecalhos_pm = pd.concat([df_cabecalhos_pm, df_cabecalhos_pm_i], ignore_index=True, sort=False)
+                df_cabecalhos_pm = pd.concat([df_cabecalhos_pm, df_cabecalhos_pm_i], ignore_index=True, sort=False)
         
         
         for i in range(len(arquivos_cabecalho_tl)):
@@ -126,9 +126,9 @@ if uploaded_file1 is not None and uploaded_file2 is not None:
             df_cabecalhos_tl_i = df_cabecalhos_tl_i[pd.notna(df_cabecalhos_tl_i['Chave de grupo'])].copy().reset_index(drop=True).loc[:, ~df_cabecalhos_tl_i.columns.str.contains('^Unnamed')]
             
             if i == 0:
-            df_cabecalhos_tl = df_cabecalhos_tl_i
+                df_cabecalhos_tl = df_cabecalhos_tl_i
             else:
-            df_cabecalhos_tl = pd.concat([df_cabecalhos_tl, df_cabecalhos_tl_i], ignore_index=True, sort=False)
+                df_cabecalhos_tl = pd.concat([df_cabecalhos_tl, df_cabecalhos_tl_i], ignore_index=True, sort=False)
             
 
          
