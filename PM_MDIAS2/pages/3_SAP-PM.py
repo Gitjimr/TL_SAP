@@ -81,7 +81,7 @@ uploaded_file2 = st.file_uploader("Carregar 'TABELAO...' com listas de tarefas g
 
 if uploaded_file1 is not None and uploaded_file2 is not None:
 
-    with st.spinner('Carregando Cabeçalho dos Planops...'):
+    with st.spinner('Carregando Cabeçalho dos Planos...'):
 
         # ADD PLANO:
         
@@ -461,7 +461,7 @@ if uploaded_file1 is not None and uploaded_file2 is not None:
             ###
 
 
-    with st.spinner('Carregando Itens dos Planops...'):
+    with st.spinner('Carregando Itens dos Planos...'):
 
         # ADD ITEM:
         
