@@ -552,7 +552,7 @@ if uploaded_file1 is not None and uploaded_file2 is not None:
         
         # Salvando em arquivo excel
         
-        with pd.ExcelWriter(buffer1, engine="xlsxwriter") as excel_writer:
+        with pd.ExcelWriter(buffer2, engine="xlsxwriter") as excel_writer:
             ## Crie um objeto ExcelWriter
             nome_arquivo_sap2 = 'CONCAT_LSMW_ADD_ITEM_'
         
