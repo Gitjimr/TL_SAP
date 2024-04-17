@@ -89,14 +89,14 @@ if uploaded_file1 is not None and uploaded_file2 is not None:
         
         arquivos_cabecalho_tl = []   # Nome dos arquivos (CONCAT_LSMW_CAB)
         
-        arquivos_cabecalho_tl.append('CONCAT_LSMW_CAB_M001-UTI')
+        arquivos_cabecalho_tl.append(uploaded_file1)
         
         
         # Nomes dos arquivos TABELAO_SAP (COM CABECALHOS) a serem lidos:
         
         arquivos_cabecalho_planos = []  # Nome dos arquivos (CABEÇALHO DO TABELAO)
         
-        arquivos_cabecalho_planos.append('TABELAO_SAP_M001-UTI')
+        arquivos_cabecalho_planos.append(uploaded_file2)
         
         
         # Carregando planilhas necessárias
