@@ -258,7 +258,7 @@ if uploaded_file is not None:
         for i in range(len(arquivos_cabecalho_operacoes)):
 
           LSMW_OP_i = pd.DataFrame({
-
+        
                     'Chave para grupo de listas de tarefas': [],
                     'Data fixada':[],
                     'Centro':[],
@@ -276,31 +276,31 @@ if uploaded_file is not None:
                     'Porcentagem de trabalho':[],
                     'Fator de execução':[],
                     'Nº equipamento':[],
-
+        
                     'A&D: ID externo da lista de tarefas':[],
                     'CONCAT CENTRO_DESC':[]
           })
-
+        
           # Leitura do arquivo baixado
-
+        
           ## Ler a tabela específica da planilha
-
+        
           ### MODELO PLANILHA DE CARGA:
           #df_cabecalhos_i = pd.read_excel(arquivos_cabecalho_operacoes[i]+'.xlsx', sheet_name='Cabeçalho da lista de tarefas', usecols="A:Q", skiprows=7,dtype = str)
           #df_operacoes_i = pd.read_excel(arquivos_cabecalho_operacoes[i]+'.xlsx', sheet_name='Operações e atividades', usecols="A:AJ", skiprows=7,dtype = str)
-
+        
           ### MODELO TABELAO_SAP:
-          df_cabecalhos_i = pd.read_excel(arquivos_cabecalho_operacoes[i], sheet_name='CABECALHO S CALIB LUB', usecols="A:Q", skiprows=0,dtype = str)
-          df_cabecalhos_i = pd.concat([df_cabecalhos_i , pd.read_excel(arquivos_cabecalho_operacoes[i], sheet_name='CABECALHO LUB', skiprows=0,dtype = str)], ignore_index=True, sort=False)
-          df_operacoes_i = pd.read_excel(arquivos_cabecalho_operacoes[i], sheet_name='TAREFAS S CALIB LUB', usecols="A:AJ", skiprows=0,dtype = str)
-          df_operacoes_i = pd.concat([df_operacoes_i , pd.read_excel(arquivos_cabecalho_operacoes[i], sheet_name='TAREFAS LUB', skiprows=0,dtype = str)], ignore_index=True, sort=False)
-
+          df_cabecalhos_i = pd.read_excel(arquivos_cabecalho_operacoes[i]+'.xlsx', sheet_name='CABECALHO S CALIB LUB', usecols="A:Q", skiprows=0,dtype = str)
+          df_cabecalhos_i = pd.concat([df_cabecalhos_i , pd.read_excel(arquivos_cabecalho_operacoes[i]+'.xlsx', sheet_name='CABECALHO LUB', skiprows=0,dtype = str)], ignore_index=True, sort=False)
+          df_operacoes_i = pd.read_excel(arquivos_cabecalho_operacoes[i]+'.xlsx', sheet_name='TAREFAS S CALIB LUB', usecols="A:AJ", skiprows=0,dtype = str)
+          df_operacoes_i = pd.concat([df_operacoes_i , pd.read_excel(arquivos_cabecalho_operacoes[i]+'.xlsx', sheet_name='TAREFAS LUB', skiprows=0,dtype = str)], ignore_index=True, sort=False)
+        
           df_cabecalhos_i = df_cabecalhos_i[pd.notna(df_cabecalhos_i['Chave do grupo de listas de tarefas*'])].copy().reset_index(drop=True).loc[:, ~df_cabecalhos_i.columns.str.contains('^Unnamed')]
           df_operacoes_i = df_operacoes_i[pd.notna(df_operacoes_i['Chave do grupo de listas de tarefas*'])].copy().reset_index(drop=True).loc[:, ~df_operacoes_i.columns.str.contains('^Unnamed')]
-
+        
           df_operacoes_i_columns = list(df_operacoes_i.columns)
-
-
+        
+        
           list_entrada = []
           ent = 1
           for j in range(len(df_operacoes_i[df_operacoes_i_columns[0]])):
@@ -312,11 +312,11 @@ if uploaded_file is not None:
             else:
               ent = 1
               list_entrada.append(ent)
-
-
+        
+        
           ## Transformando tabelas em DataFrame do Python
           LSMW_OP_i['Numerador de grupos'] = np.nan
-
+        
           LSMW_OP_i['Centro'] = df_operacoes_i[df_operacoes_i_columns[6]]
           LSMW_OP_i['Data fixada'] = [data_hoje]*len(LSMW_OP_i['Centro'])
           LSMW_OP_i['Entrada'] = list_entrada
@@ -325,7 +325,7 @@ if uploaded_file is not None:
           LSMW_OP_i['Txt.breve operação'] = df_operacoes_i[df_operacoes_i_columns[8]]
           LSMW_OP_i['Trabalho da operação'] = df_operacoes_i[df_operacoes_i_columns[13]]
           LSMW_OP_i['Unidade de trabalho'] = df_operacoes_i[df_operacoes_i_columns[14]]
-
+        
           LSMW_OP_i['Núm.capacidade necessária'] = df_operacoes_i[df_operacoes_i_columns[16]]
           LSMW_OP_i['Duração normal da operação'] = df_operacoes_i[df_operacoes_i_columns[17]]
           LSMW_OP_i['Unidade da duração normal'] = df_operacoes_i[df_operacoes_i_columns[18]]
@@ -333,77 +333,77 @@ if uploaded_file is not None:
           LSMW_OP_i['Porcentagem de trabalho'] = df_operacoes_i[df_operacoes_i_columns[19]]
           LSMW_OP_i['Fator de execução'] = df_operacoes_i[df_operacoes_i_columns[9]]
           LSMW_OP_i['Nº equipamento'] = df_operacoes_i[df_operacoes_i_columns[10]]
-
+        
           LSMW_OP_i['Chave para grupo de listas de tarefas'] = np.nan
-
+        
           LSMW_OP_i['A&D: ID externo da lista de tarefas'] = df_operacoes_i[df_operacoes_i_columns[0]]    #**
-
+        
           if i == 0:
             LSMW_OP = LSMW_OP_i
           else:
             LSMW_OP = pd.concat([LSMW_OP, LSMW_OP_i], ignore_index=True, sort=False)
-
-
-
+        
+        
+        
         #####################
-
+        
         try:
           # Checando de lista de tarefa já foi carregada
-
+        
           LSMW_OP.insert(loc=LSMW_OP.columns.get_loc('A&D: ID externo da lista de tarefas') + 1, column='CARREGADO?', value=np.nan)
-
-
+        
+        
           for i in range(len(LSMW_OP['Centro'])):
-
+        
             ## Trazer o Concat CENTRO_DESC com base no cabeçalho LSMW da TL:
             valor_procurado = LSMW_OP['A&D: ID externo da lista de tarefas'][i]
             index_tl = LSMW_CAB_CAR[LSMW_CAB_CAR['A&D: ID externo da lista de tarefas'] == valor_procurado].index
             if not index_tl.empty:
                 LSMW_OP.at[i, 'CONCAT CENTRO_DESC'] = LSMW_CAB_CAR.at[index_tl[0], 'CONCAT CENTRO_DESC']
                 LSMW_OP.at[i, 'Chave para grupo de listas de tarefas'] = LSMW_CAB_CAR.at[index_tl[0], 'Chave de grupo']
-
+        
             if pd.isna(LSMW_OP['CONCAT CENTRO_DESC'][i]):   # Trazer informações de carregamento para os que ainda não foram carregados ou devem ser checados manualmente
                 index_tl = LSMW_CAB[LSMW_CAB['A&D: ID externo da lista de tarefas'] == valor_procurado].index
                 if not index_tl.empty:
                     LSMW_OP.at[i, 'CONCAT CENTRO_DESC'] = LSMW_CAB.at[index_tl[0], 'CONCAT CENTRO_DESC']
                     LSMW_OP.at[i, 'CARREGADO?'] = LSMW_CAB.at[index_tl[0], 'CARREGADO?']
-
-
+        
+        
             ## Checar Equipamento + Subop repetidos
             if LSMW_OP['A&D: ID externo da lista de tarefas'][i] in LSMW_CAB_CAR['A&D: ID externo da lista de tarefas'].values:
-
+        
               LSMW_OP['CARREGADO?'][i] = 1  # Indentificando operações já carregadas
-
+        
               LSMW_OP_un = SAP_TL[SAP_TL['CONCAT CENTRO_DESC'] == LSMW_OP['CONCAT CENTRO_DESC'][i]].reset_index(drop=True)
               LSMW_OP_un['CONCAT EQP_OP'] = LSMW_OP_un["Equipamento operação"].astype(str) + LSMW_OP_un["Txt.breve operação"].astype(str) #*
               CONCAT_EQP_OP_i = str(LSMW_OP['Nº equipamento'][i])+str(LSMW_OP['Txt.breve operação'][i])
               if CONCAT_EQP_OP_i in LSMW_OP_un['CONCAT EQP_OP'].values:
                 LSMW_OP['CARREGADO?'][i] = 'EQUIP+OP REPETIDO: EXCLUIR LINHA E ALTERAR NUM DA OP'
-
-
+        
+        
             ##  Se todas as operações são repetidas, excluir cabeçalho, se não, mantê-lo na aba de carregados (CARRGADOS? = 1)
           for i in range(len(LSMW_OP['Centro'])):
-
+        
             if LSMW_OP['CARREGADO?'][i] == 'EQUIP+OP REPETIDO: EXCLUIR LINHA E ALTERAR NUM DA OP':    # Verifica se já é item que foi carregado
               if pd.isna(LSMW_OP['Suboperação'][i]) and 'LUB' not in str(LSMW_OP['Txt.breve operação'][i])[0:4]:   # Saber se é cabealho
                 LSMW_OP_un = LSMW_OP[LSMW_OP['Chave para grupo de listas de tarefas'] == LSMW_OP['Chave para grupo de listas de tarefas'][i]].reset_index(drop=True)
                 todos_iguais = LSMW_OP_un['CARREGADO?'].nunique() == 1    # Verificar se todos os termos iguais
                 if not todos_iguais:
                   LSMW_OP['CARREGADO?'][i] = 1
-
+        
           LSMW_OP = LSMW_OP[LSMW_OP['CARREGADO?'] != 'EQUIP+OP REPETIDO: EXCLUIR LINHA E ALTERAR NUM DA OP'].reset_index(drop=True)
-
-
+        
+        
             ## Número e tempo das operações:
           for i in range(len(LSMW_OP['Centro'])):
-
+        
             if LSMW_OP['A&D: ID externo da lista de tarefas'][i] in LSMW_CAB_CAR['A&D: ID externo da lista de tarefas'].values:
-
+        
               ### Trazer cabeçalho da lista i
               valor_procurado = LSMW_OP['A&D: ID externo da lista de tarefas'][i]
               index_tl = LSMW_CAB_CAR[LSMW_CAB_CAR['A&D: ID externo da lista de tarefas'] == valor_procurado].index
               cabecalho_lista_i = LSMW_CAB_CAR.at[index_tl[0], 'Descrição roteiro']
-
+        
               ### Trazer número da última suboperação (não LUB) - OK FUNFOU
               if not pd.isna(LSMW_OP['Suboperação'][i]) and 'LUB' not in str(cabecalho_lista_i)[0:4]:
                 if pd.isna(LSMW_OP['Suboperação'][i-1]):    # Saber se antes desta subop é o cabeçalho
@@ -417,7 +417,7 @@ if uploaded_file is not None:
                   nova_subop = nova_subop + 10
                   LSMW_OP['Suboperação'][i] = nova_subop
                   LSMW_OP['Entrada'][i] = (nova_subop/10) + 1 ###* testar
-
+        
               ### Trazer número da última operação (LUB) - OK FUNFOU
               elif 'LUB' in str(cabecalho_lista_i)[0:4]:
                 if LSMW_OP['A&D: ID externo da lista de tarefas'][i-1] != LSMW_OP['A&D: ID externo da lista de tarefas'][i]:    # Saber se antes desta subop é outra op
@@ -430,11 +430,11 @@ if uploaded_file is not None:
                   nova_subop = nova_subop + 10
                   LSMW_OP['Nº operação'][i] = nova_subop
                   LSMW_OP['Entrada'][i] = (nova_subop/10) + 1 ###* testar
-
-
+        
+        
               ### Alterar tempo total para cabeçalho não lubrificação
               if pd.isna(LSMW_OP['Suboperação'][i]) and 'LUB' not in str(LSMW_OP['Txt.breve operação'][i])[0:4]:
-
+        
                 ####  Somando tempo das ops a serem adicionadas
                 LSMW_OP_un = LSMW_OP[LSMW_OP['A&D: ID externo da lista de tarefas'] == LSMW_OP['A&D: ID externo da lista de tarefas'][i]].reset_index(drop=True)
                 soma_tempo_dn = 0
@@ -455,14 +455,14 @@ if uploaded_file is not None:
                     tempo_int_t = int(LSMW_OP_un['Trabalho'][t])
                     soma_tempo_dn += tempo_int_dn
                     soma_tempo_t += tempo_int_t
-
+        
                 LSMW_OP['Duração normal da operação'][i] = soma_tempo_dn
                 LSMW_OP['Trabalho da operação'][i] = soma_tempo_t
-
-
+        
+        
           LSMW_OP_CAR = LSMW_OP[LSMW_OP['CARREGADO?'] == 1]
           LSMW_OP = LSMW_OP[LSMW_OP['CARREGADO?'] != 1]
-
+        
         except:
           pass
 
