@@ -290,10 +290,10 @@ if uploaded_file is not None:
           #df_operacoes_i = pd.read_excel(arquivos_cabecalho_operacoes[i]+'.xlsx', sheet_name='Operações e atividades', usecols="A:AJ", skiprows=7,dtype = str)
         
           ### MODELO TABELAO_SAP:
-          df_cabecalhos_i = pd.read_excel(arquivos_cabecalho_operacoes[i]+'.xlsx', sheet_name='CABECALHO S CALIB LUB', skiprows=0,dtype = str)
-          df_cabecalhos_i = pd.concat([df_cabecalhos_i , pd.read_excel(arquivos_cabecalho_operacoes[i]+'.xlsx', sheet_name='CABECALHO LUB', skiprows=0,dtype = str)], ignore_index=True, sort=False)
-          df_operacoes_i = pd.read_excel(arquivos_cabecalho_operacoes[i]+'.xlsx', sheet_name='TAREFAS S CALIB LUB', skiprows=0,dtype = str)
-          df_operacoes_i = pd.concat([df_operacoes_i , pd.read_excel(arquivos_cabecalho_operacoes[i]+'.xlsx', sheet_name='TAREFAS LUB', skiprows=0,dtype = str)], ignore_index=True, sort=False)
+          df_cabecalhos_i = pd.read_excel(arquivos_cabecalho_operacoes[i], sheet_name='CABECALHO S CALIB LUB', skiprows=0,dtype = str)
+          df_cabecalhos_i = pd.concat([df_cabecalhos_i , pd.read_excel(arquivos_cabecalho_operacoes[i], sheet_name='CABECALHO LUB', skiprows=0,dtype = str)], ignore_index=True, sort=False)
+          df_operacoes_i = pd.read_excel(arquivos_cabecalho_operacoes[i], sheet_name='TAREFAS S CALIB LUB', skiprows=0,dtype = str)
+          df_operacoes_i = pd.concat([df_operacoes_i , pd.read_excel(arquivos_cabecalho_operacoes[i], sheet_name='TAREFAS LUB', skiprows=0,dtype = str)], ignore_index=True, sort=False)
         
           df_cabecalhos_i = df_cabecalhos_i[pd.notna(df_cabecalhos_i['Chave do grupo de listas de tarefas*'])].copy().reset_index(drop=True).loc[:, ~df_cabecalhos_i.columns.str.contains('^Unnamed')]
           df_operacoes_i = df_operacoes_i[pd.notna(df_operacoes_i['Chave do grupo de listas de tarefas*'])].copy().reset_index(drop=True).loc[:, ~df_operacoes_i.columns.str.contains('^Unnamed')]
