@@ -107,6 +107,7 @@ if uploaded_file1 is not None and uploaded_file2 is not None:
             
             ### MODELO TABELAO_SAP:
             df_cabecalhos_pm_i = pd.read_excel(arquivos_cabecalho_planos[i], sheet_name='CABECALHO PLANO', skiprows=0,dtype = str)
+            st.write(df_cabecalhos_pm_i)
             df_cabecalhos_pm_i["CONCAT"] = df_cabecalhos_pm_i["Centro de planejamento*"].map(str, na_action=None) + df_cabecalhos_pm_i["Descrição"].map(str, na_action='ignore')    # A descrição do cabecalho é a "descrição antiga", sem revisão na qtd de caracteres
             df_cabecalhos_pm_i = df_cabecalhos_pm_i[pd.notna(df_cabecalhos_pm_i['Chave do grupo de listas de tarefas*'])].copy().reset_index(drop=True).loc[:, ~df_cabecalhos_pm_i.columns.str.contains('^Unnamed')]
             
