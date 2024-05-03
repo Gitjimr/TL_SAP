@@ -130,7 +130,7 @@ if uploaded_file1 is not None and uploaded_file2 is not None:
             else:
                 df_cabecalhos_tl = pd.concat([df_cabecalhos_tl, df_cabecalhos_tl_i], ignore_index=True, sort=False)
             
-
+        st.write(df_cabecalhos_tl)
          
         LSMW_ADD_PM = {
         
