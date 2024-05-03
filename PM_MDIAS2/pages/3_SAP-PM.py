@@ -29,7 +29,7 @@ my_path = path + '/files/'
 try:
     if 'SAP_EQP' not in st.session_state:
         with st.spinner('Carregando Equipamentos SAP...'):
-            SAP_EQP = pd.read_excel(my_path + 'SAP_EQP_05-04.xlsx', sheet_name='Sheet1', usecols="A:H", skiprows=0,
+            SAP_EQP = pd.read_excel(my_path + 'SAP_EQP_05-04.xlsx', sheet_name='Sheet1', skiprows=0,
                                     dtype=str)
             SAP_EQP['CONCAT CENTRO_DESC'] = SAP_EQP["Centro planejamento"].map(str, na_action=None) + SAP_EQP[
                 "Denominação do objeto técnico"].map(str, na_action='ignore')
@@ -42,7 +42,7 @@ except:
 try:
     if 'SAP_TL' not in st.session_state:
         with st.spinner('Carregando Task Lists SAP...'):
-            SAP_TL = pd.read_excel(my_path + 'SAP_TL_04-04.xlsx', sheet_name='Sheet1', usecols="A:N", skiprows=0,
+            SAP_TL = pd.read_excel(my_path + 'SAP_TL_04-04.xlsx', sheet_name='Sheet1', skiprows=0,
                                    dtype=str)
             SAP_TL['CONCAT CENTRO_DESC'] = SAP_TL["Centro planejamento"].map(str, na_action=None) + SAP_TL[
                 "Descrição"].map(str, na_action='ignore')
