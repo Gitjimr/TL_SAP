@@ -689,7 +689,7 @@ if uploaded_file is not None:
 
         for i in range(len(df['ROTA?'])):
 
-            if df['ROTA?'][i] == 'SIM':
+            if df['ROTA?'][i] == 'SIM' or df['ROTA?'][i] == 'PERSONALIZADO':
                 df_tl['ID N6/N5'][i] = df['LI_N5'][i]
                 df_tl['ID SAP N6/N5'][i] = np.nan
                 df_tl['N6/N5'][i] = df['DESC SISTEMAS / ETAPAS PROCESS'][i]
