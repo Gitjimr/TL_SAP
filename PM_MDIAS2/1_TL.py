@@ -65,47 +65,43 @@ import os
 
 path = os.path.dirname(__file__)
 my_path = path + '/pages/files/'
+uploaded_file0 = st.sidebar.file_uploader("Carregar Dados Chave",
+                                         help="Carregar arquivo com dados necessários do SAP. Caso precise recarregá-lo, atualize a página. Este arquivo deve ser continuamente atualizado conforme novos dados sejam inseridos no SAP"
+                                         )
+if uploaded_file0 is not None:
+    if 'SAP_CTPM' not in st.session_state:
+        with st.spinner('Carregando Lista de Equipamentos...'):
+            SAP_EQP_N6 = pd.read_excel(uploaded_file0, sheet_name="EQP", skiprows=0, dtype=str)
+        with st.spinner('Carregando IE03 SAP...'):
+            SAP_EQP = pd.read_excel(uploaded_file0, sheet_name="IE03", skiprows=0, dtype=str)
+        with st.spinner('Carregando IA39 SAP...'):
+            SAP_TL = pd.read_excel(uploaded_file0, sheet_name="IA39", skiprows=0, dtype=str)
+        with st.spinner('Carregando IP18 SAP...'):
+            SAP_ITEM = pd.read_excel(uploaded_file0, sheet_name="IP18", skiprows=0, dtype=str)
+        with st.spinner('Carregando IP24 SAP...'):
+            SAP_PMI = pd.read_excel(uploaded_file0, sheet_name="IP24", skiprows=0, dtype=str)
+        with st.spinner('Carregando Centros de Trabalho SAP...'):
+            SAP_CTPM = pd.read_excel(uploaded_file0, sheet_name="CTPM", skiprows=0, dtype=str)
+        with st.spinner('Carregando Materiais SAP...'):
+            SAP_MATERIAIS = pd.read_excel(uploaded_file0, sheet_name="MATERIAIS", skiprows=0, dtype=str)
+            SAP_MATERIAIS.dropna(subset='Material', inplace=True)
+            SAP_MATERIAIS.reset_index(drop=True, inplace=True)
 
-
-try:
-    if 'SAP_EQP' not in st.session_state:
-        with st.spinner('Carregando Equipamentos SAP...'):
-            SAP_EQP = pd.read_excel(my_path + 'SAP_EQP_05-04.xlsx', sheet_name='Sheet1', usecols="A:H", skiprows=0, dtype=str)
-            SAP_EQP['CONCAT CENTRO_DESC'] = SAP_EQP["Centro planejamento"].map(str, na_action=None) + SAP_EQP[
-                "Denominação do objeto técnico"].map(str, na_action='ignore')
-            SAP_EQP = pd.DataFrame(SAP_EQP)
+            st.session_state.SAP_EQP_N6 = SAP_EQP_N6
             st.session_state.SAP_EQP = SAP_EQP
-    SAP_EQP = st.session_state['SAP_EQP']
-except:
-    pass
-
-try:
-    if 'SAP_TL' not in st.session_state:
-        with st.spinner('Carregando Task Lists SAP...'):
-            SAP_TL = pd.read_excel(my_path + 'SAP_TL_04-04.xlsx', sheet_name='Sheet1', usecols="A:N", skiprows=0, dtype=str)
-            SAP_TL['CONCAT CENTRO_DESC'] = SAP_TL["Centro planejamento"].map(str, na_action=None) + SAP_TL["Descrição"].map(str,na_action='ignore')
-            SAP_TL = pd.DataFrame(SAP_TL)
             st.session_state.SAP_TL = SAP_TL
-    SAP_TL = st.session_state['SAP_TL']
-except:
-    pass
-
-try:
-    if 'SAP_PMI' not in st.session_state:
-        with st.spinner('Carregando Planos SAP...'):
-            SAP_PMI = pd.read_excel(my_path + 'SAP_PMI_08-04_.xlsx', sheet_name='Sheet1', skiprows=0, dtype=str)
-            SAP_PMI['CONCAT CENTRO_DESC'] = SAP_PMI["Planning Plant"].map(str, na_action=None) + SAP_PMI[
-                "Maintenance Plan Desc"].map(str, na_action='ignore')
-            SAP_PMI['CONCAT TL_EQP'] = SAP_PMI["Group"].map(str, na_action=None) + SAP_PMI["Equipment"].map(str,na_action='ignore')
-
-            SAP_PMI = pd.DataFrame(SAP_PMI)
+            st.session_state.SAP_ITEM = SAP_ITEM
             st.session_state.SAP_PMI = SAP_PMI
-    SAP_PMI = st.session_state['SAP_PMI']
-except:
-    pass
-
-
-
+            st.session_state.SAP_MATERIAIS = SAP_MATERIAIS
+            st.session_state.SAP_CTPM = SAP_CTPM
+    else:
+        SAP_EQP_N6 = st.session_state['SAP_EQP_N6']
+        SAP_EQP = st.session_state['SAP_EQP']
+        SAP_TL = st.session_state['SAP_TL']
+        SAP_ITEM = st.session_state['SAP_ITEM']
+        SAP_PMI = st.session_state['SAP_PMI']
+        SAP_CTPM = st.session_state['SAP_CTPM']
+        SAP_MATERIAIS = st.session_state['SAP_MATERIAIS']
 
 #*-*-*-*-OK ACIMA
 
