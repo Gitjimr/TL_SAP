@@ -113,7 +113,7 @@ except:
 #   SETUP
 #   CONCLUIR EDIÇÃO AQUI PARA PEGAR CERTO O ARQUIVO DE UPLOAD:
 uploaded_file = st.file_uploader("Carregar planilha 'Op_padrao'")
-if uploaded_file is not None:
+if uploaded_file is not None and uploaded_file0 is not None:
 
     with st.spinner('Carregando Op_padrao...'):
 
