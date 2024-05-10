@@ -189,7 +189,7 @@ if uploaded_file1 is not None and uploaded_file2 is not None:
         
           # Outros:
         
-          LSMW_ADD_PM['Tipo de ordem'].append('ZM03')
+          LSMW_ADD_PM['Tipo de ordem'].append('ZM04' if 'PRED' in str(LSMW_ADD_PM['Texto breve do item'][-1])[0:5] else 'ZM03')
           LSMW_ADD_PM['Ctg.plano de manutenção'].append('PM')
           LSMW_ADD_PM['Intervalo de solicitação de manuten'].append(335)
           LSMW_ADD_PM['Unidade para o intervalo de solicit'].append('DIA')
@@ -233,6 +233,8 @@ if uploaded_file1 is not None and uploaded_file2 is not None:
             LSMW_ADD_PM['Tipo de atividade de manutenção'].append('Z11')
           elif 'TES' in str(LSMW_ADD_PM['Texto breve do item'][-1])[0:4]:
             LSMW_ADD_PM['Tipo de atividade de manutenção'].append('Z12')
+          elif 'PRED' in str(LSMW_ADD_PM['Texto breve do item'][-1])[0:5]:
+            LSMW_ADD_PM['Tipo de atividade de manutenção'].append('Z14')
           else:
             LSMW_ADD_PM['Tipo de atividade de manutenção'].append(np.nan)
         
