@@ -68,7 +68,7 @@ if uploaded_file0 is not None:
 uploaded_file1 = st.file_uploader("Carregar 'CONCAT_LSMW_CAB' com cabeçalho das listas de tarefas geradas na página TL_SAP",help="Precisa estar com o número das task lists")
 uploaded_file2 = st.file_uploader("Carregar 'TABELAO...' com listas de tarefas geradas na página TL")
 
-if uploaded_file1 is not None and uploaded_file2 is not None:
+if uploaded_file1 is not None and uploaded_file2 is not None and uploaded_file0 is not None:
 
     with st.spinner('Carregando Cabeçalho dos Planos...'):
 
