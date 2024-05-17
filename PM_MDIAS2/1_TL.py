@@ -992,7 +992,7 @@ if uploaded_file is not None and uploaded_file0 is not None:
                     df_opativ['Sequencial*'][-1] = 'INDICADO PARA NÃO SUBIR'
                 #
 
-                df_opativ['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i])
+                df_opativ['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i] if str('SIM') in str(df_2['ROTA?'][i]) else np.nan)
                 df_opativ['Chave de cálculo'].append(2)
                 try:
                     df_opativ['Trabalho envolvido na atividade'].append(
@@ -1048,7 +1048,7 @@ if uploaded_file is not None and uploaded_file0 is not None:
                     df_opativ['Sequencial*'][-1] = 'INDICADO PARA NÃO SUBIR'
                 #
 
-                df_opativ['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i])
+                df_opativ['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i] if str('SIM') in str(df_2['ROTA?'][i]) else np.nan)
                 df_opativ['Chave de cálculo'].append(2)
                 try:
                     df_opativ['Trabalho envolvido na atividade'].append(
@@ -1325,7 +1325,7 @@ if uploaded_file is not None and uploaded_file0 is not None:
                     df_opativ_lub['Sequencial*'][-1] = 'INDICADO PARA NÃO SUBIR'
                 #
 
-                df_opativ_lub['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i])
+                df_opativ_lub['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i] if str('SIM') in str(df_2['ROTA?'][i]) else np.nan)
                 df_opativ_lub['Chave de cálculo'].append(2)
                 df_opativ_lub['Trabalho envolvido na atividade'].append(
                     int(df_2['DURAÇÃO (min)'][i]))  ## SOMAR TODAS AS SUBS
@@ -1397,7 +1397,7 @@ if uploaded_file is not None and uploaded_file0 is not None:
                     df_opativ_lub['Sequencial*'][-1] = 'INDICADO PARA NÃO SUBIR'
                 #
 
-                df_opativ_lub['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i])
+                df_opativ_lub['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i] if str('SIM') in str(df_2['ROTA?'][i]) else np.nan)
                 df_opativ_lub['Chave de cálculo'].append(2)
 
                 try:
