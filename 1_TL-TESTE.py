@@ -668,6 +668,7 @@ if uploaded_file is not None:
         df_tl['N6/N5'] = np.nan
         df_tl['OPERAÇÃO: TEXTO LONGO'] = df['OP: TEXTO DESCRITIVO']
         df_tl['DURAÇÃO (min)'] = df['DUR_NORMAL_MIN']
+        df_tl['OPERADORES'] = df['QTD']
         df_tl['ROTA?'] = df['ROTA?']
         df_tl['ID N6/N5'] = np.nan
         df_tl['ID SAP N6/N5'] = np.nan
