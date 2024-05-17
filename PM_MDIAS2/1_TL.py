@@ -700,6 +700,19 @@ if uploaded_file is not None and uploaded_file0 is not None:
                 df_tl['N6/N5'][i] = df['EQUIPAMENTO PRINCIPAL'][i]
                 df_tl['ID EQUIP OP'][i] = np.nan
                 df_tl['EQUIPAMENTO OP'][i] = np.nan
+                if isinstance(df['Tipo OP Padrão N6'][i], str):
+                    df_tl['ID EQUIP OP'][i] = df['NR_TECNICO_N6'][i]
+                    df_tl['ID SAP EQUIP OP'][i] = df['ID_SAP_N6'][i]
+                    df_tl['EQUIPAMENTO OP'][i] = df['EQUIPAMENTO PRINCIPAL'][i]
+                elif isinstance(df['Tipo OP Padrão N7'][i], str):
+                    df_tl['ID EQUIP OP'][i] = df['NR_TECNICO_N7'][i]
+                    df_tl['ID SAP EQUIP OP'][i] = df['ID_SAP_N7'][i]
+                    df_tl['EQUIPAMENTO OP'][i] = df['SISTEMA FUNCIONAL / CONJUNTO'][i]
+                elif isinstance(df['Tipo OP Padrão N8'][i], str):
+                    df_tl['ID EQUIP OP'][i] = df['NR_TECNICO_N8'][i]
+                    df_tl['ID SAP EQUIP OP'][i] = df['ID_SAP_N8'][i]
+                    df_tl['EQUIPAMENTO OP'][i] = df['EQUIPAMENTO FUNCIONAL / SUB-CONJUNTO'][i]
+
 
         #
 
