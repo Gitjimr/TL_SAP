@@ -808,15 +808,15 @@ if uploaded_file is not None and uploaded_file0 is not None:
             'LI_N3': []
         }
 
-        df_1 = df_tl.drop_duplicates(subset=['TASK LIST', 'N6/N5'], keep='last').reset_index(drop=True)
+        df_1 = df_tl.drop_duplicates(subset=['TASK LIST', 'EQUIPAMENTO OP'], keep='last').reset_index(drop=True)
         # df_1 = df_tl.drop_duplicates( subset = ['TASK LIST','N6/N5'], keep = 'last')
         # df_1 = df_1.sort_values(by=['Índices'])
         # df_1 = df_1.reset_index(drop=True)
 
         indice = 0
         for i in range(len(df_1['LI_N3'])):
-            if i > 0 and df_1['TASK LIST'][i] == df_1['TASK LIST'][i - 1] and df_1['ID SAP N6/N5'][i] == \
-                    df_1['ID SAP N6/N5'][i - 1]:
+            if i > 0 and df_1['TASK LIST'][i] == df_1['TASK LIST'][i - 1] and df_1['ID SAP EQUIP OP'][i] == \
+                    df_1['ID SAP EQUIP OP'][i - 1]:
                 continue
 
             df_cabecalho_eqp['Chave do grupo de listas de tarefas*'].append(num_carga + indice)
@@ -842,8 +842,8 @@ if uploaded_file is not None and uploaded_file0 is not None:
                 str(df_cabecalho_eqp['Chave do grupo de listas de tarefas*'][-1]) + '_' + str(
                     df_cabecalho_eqp['Contador de grupos*'][-1]))
             if str(df_1['ROTA?'][i]) == 'NAO':
-                df_cabecalho_eqp['Equipamento'].append(df_1['N6/N5'][i])
-                df_cabecalho_eqp['ID_SAP'].append(df_1['ID SAP N6/N5'][i])
+                df_cabecalho_eqp['Equipamento'].append(df_1['EQUIPAMENTO OP'][i])
+                df_cabecalho_eqp['ID_SAP'].append(df_1['ID SAP EQUIP OP'][i])
                 df_cabecalho_eqp['Local de instalação'].append(np.nan)
             else:
                 df_cabecalho_eqp['Equipamento'].append(np.nan)
