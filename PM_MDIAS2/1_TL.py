@@ -903,9 +903,9 @@ if uploaded_file is not None and uploaded_file0 is not None:
             'NC?': []
         }
         df_2 = df_tl
-        df_2['ID EQUIP OP'] = np.where(df_tl['ROTA?'] == 'SIM', df_tl['ID EQUIP OP'], np.nan)
-        df_2['ID SAP EQUIP OP'] = np.where(df_tl['ROTA?'] == 'SIM', df_tl['ID SAP EQUIP OP'], np.nan)
-        df_2['EQUIPAMENTO OP'] = np.where(df_tl['ROTA?'] == 'SIM', df_tl['EQUIPAMENTO OP'], np.nan)
+        df_2['ID EQUIP OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['ID EQUIP OP'], np.nan)
+        df_2['ID SAP EQUIP OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['ID SAP EQUIP OP'], np.nan)
+        df_2['EQUIPAMENTO OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['EQUIPAMENTO OP'], np.nan)
         df_2 = df_2.drop_duplicates(subset=['TASK LIST', 'OPERAÇÃO: TEXTO CURTO', 'ID SAP EQUIP OP', 'EQUIPAMENTO OP'],
                                      keep='last').reset_index(drop=True)
         # df_2 = df_tl.drop_duplicates( subset = ['TASK LIST','OPERAÇÃO: TEXTO CURTO'], keep = 'last')
@@ -1278,9 +1278,9 @@ if uploaded_file is not None and uploaded_file0 is not None:
         num_carga = list(df_opativ[df_opativ.columns[0]])[-1] + 1
 
         df_2 = df_tl
-        df_2['ID EQUIP OP'] = np.where(df_tl['ROTA?'] == 'SIM', df_tl['ID EQUIP OP'], np.nan)
-        df_2['ID SAP EQUIP OP'] = np.where(df_tl['ROTA?'] == 'SIM', df_tl['ID SAP EQUIP OP'], np.nan)
-        df_2['EQUIPAMENTO OP'] = np.where(df_tl['ROTA?'] == 'SIM', df_tl['EQUIPAMENTO OP'], np.nan)
+        df_2['ID EQUIP OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['ID EQUIP OP'], np.nan)
+        df_2['ID SAP EQUIP OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['ID SAP EQUIP OP'], np.nan)
+        df_2['EQUIPAMENTO OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['EQUIPAMENTO OP'], np.nan)
         
         # df_2 = df_tl.sort_values(by=['TASK LIST','N6/N5'])
         df_2 = df_2.drop_duplicates(subset=['TASK LIST', 'OPERAÇÃO: TEXTO CURTO', 'ID SAP EQUIP OP', 'EQUIPAMENTO OP'],
