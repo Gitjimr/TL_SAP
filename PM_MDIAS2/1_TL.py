@@ -1274,9 +1274,11 @@ if uploaded_file is not None and uploaded_file0 is not None:
             'Texto descritivo de operação': [],
             'NC?': []
         }
-
-        num_carga = list(df_opativ[df_opativ.columns[0]])[-1] + 1
-
+        try:
+            num_carga = list(df_opativ[df_opativ.columns[0]])[-1] + 1
+        except:
+            num_carga = 0
+            
         df_2 = df_tl
         df_2['ID EQUIP OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['ID EQUIP OP'], np.nan)
         df_2['ID SAP EQUIP OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['ID SAP EQUIP OP'], np.nan)
