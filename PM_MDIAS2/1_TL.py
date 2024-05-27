@@ -715,7 +715,26 @@ if uploaded_file is not None and uploaded_file0 is not None:
 
 
         #
-
+        
+        # LOCAL DE INSTALAÇÃO PARA ROTA PERSONALIZADA:
+        
+        for i in range(len(df['ROTA?'])):   # *********** ADICIONADO 24/05/2024
+        
+          if df['ROTA?'][i] == 'PERSONALIZADO':
+            df__copia = df[df['TASK LIST'] == df_tl['TASK LIST'][i]].copy()
+            print(df__copia)
+            if len(df__copia.drop_duplicates( subset = ['LI_N5'] ).reset_index(drop = True)) == 1:
+              df_tl['ID N6/N5'][i] = df['LI_N5'][i]
+            elif len(df__copia.drop_duplicates( subset = ['LI_N4'] ).reset_index(drop = True)) == 1:
+              df_tl['ID N6/N5'][i] = df['LI_N4'][i]
+            elif len(df__copia.drop_duplicates( subset = ['LI_N3'] ).reset_index(drop = True)) == 1:
+              df_tl['ID N6/N5'][i] = df['LI_N3'][i]
+            elif len(df__copia.drop_duplicates( subset = ['LI_N2'] ).reset_index(drop = True)) == 1:
+              df_tl['ID N6/N5'][i] = df['LI_N2'][i]
+            else:
+              df_tl['ID N6/N5'][i] = 'ERRO: EQUIPAMENTOS DE SETORES (IND, MOI, ETC) DIFERENTES PRESENTES NA MESMA ROTA.'
+        #
+        
         # Ordenando 'TASK LIST' em ordem alfabética:
 
         df_tl = df_tl.sort_values(by=['TASK LIST', 'N6/N5', 'ID SAP N6'])
@@ -807,8 +826,8 @@ if uploaded_file is not None and uploaded_file0 is not None:
             'Local de instalação': [],
             'LI_N3': []
         }
-
-        df_1 = df_tl.drop_duplicates(subset=['TASK LIST', 'EQUIPAMENTO OP'], keep='last').reset_index(drop=True)
+        df_1 = df_tl.copy()   # *********** ALTERADO 24/05/2024
+        df_1 = df_1.drop_duplicates( subset = ['TASK LIST','EQUIPAMENTO OP'], keep = 'last').reset_index(drop = True)    # ALTERADO: O CABEÇALHO PUXAVA SÓ O EQP PRINCIPAL
         # df_1 = df_tl.drop_duplicates( subset = ['TASK LIST','N6/N5'], keep = 'last')
         # df_1 = df_1.sort_values(by=['Índices'])
         # df_1 = df_1.reset_index(drop=True)
@@ -902,10 +921,10 @@ if uploaded_file is not None and uploaded_file0 is not None:
             'Texto descritivo de operação': [],
             'NC?': []
         }
-        df_2 = df_tl
-        df_2['ID EQUIP OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['ID EQUIP OP'], np.nan)
-        df_2['ID SAP EQUIP OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['ID SAP EQUIP OP'], np.nan)
-        df_2['EQUIPAMENTO OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['EQUIPAMENTO OP'], np.nan)
+        df_2 = df_tl.copy()   # *********** ALTERADO 24/05/2024
+        df_2['ID EQUIP OP'] = np.where((df_2['ROTA?'] == 'SIM') | (df_2['ROTA?'] == 'PERSONALIZADO'), df_2['ID EQUIP OP'], np.nan)
+        df_2['ID SAP EQUIP OP'] = np.where((df_2['ROTA?'] == 'SIM') | (df_2['ROTA?'] == 'PERSONALIZADO'), df_2['ID SAP EQUIP OP'], np.nan)
+        df_2['EQUIPAMENTO OP'] = np.where((df_2['ROTA?'] == 'SIM') | (df_2['ROTA?'] == 'PERSONALIZADO'), df_2['EQUIPAMENTO OP'], np.nan)
         df_2 = df_2.drop_duplicates(subset=['TASK LIST', 'OPERAÇÃO: TEXTO CURTO', 'ID SAP EQUIP OP', 'EQUIPAMENTO OP'],
                                      keep='last').reset_index(drop=True)
         # df_2 = df_tl.drop_duplicates( subset = ['TASK LIST','OPERAÇÃO: TEXTO CURTO'], keep = 'last')
@@ -985,9 +1004,7 @@ if uploaded_file is not None and uploaded_file0 is not None:
                 df_opativ['Descrição da operação'].append(df_2['OPERAÇÃO: TEXTO CURTO'][i])
                 # df_opativ['Fator de execução'].append(1 if 'FUNC' in df_2['TASK LIST'][i] else 0)
                 df_opativ['Fator de execução'].append(1)
-                df_opativ['NC?'].append(
-                    'NC' if pd.isna(df_2['ID SAP EQUIP OP'][i]) and str('SIM') in str(df_2['ROTA?'][i]) else
-                    df_2['ID SAP EQUIP OP'][i])  # 'NA' SE EQP NÃO SUBIU
+                df_opativ['NC?'].append('NC' if pd.isna(df_2['ID SAP EQUIP OP'][i]) and str('NAO') not in str(df_2['ROTA?'][i]) else df_2['ID SAP EQUIP OP'][i])   # 'NA' SE EQP NÃO SUBIU
 
                 # Checar se está dentro da lista das task list que não irão subir:
                 if df_2['TASK LIST'][i] in lista_nsubir:
@@ -995,7 +1012,7 @@ if uploaded_file is not None and uploaded_file0 is not None:
                     df_opativ['Sequencial*'][-1] = 'INDICADO PARA NÃO SUBIR'
                 #
 
-                df_opativ['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i] if str('SIM') in str(df_2['ROTA?'][i]) else np.nan)
+                df_opativ['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i] if str('NAO') not in str(df_2['ROTA?'][i]) else np.nan)
                 df_opativ['Chave de cálculo'].append(2)
                 try:
                     df_opativ['Trabalho envolvido na atividade'].append(
@@ -1041,9 +1058,7 @@ if uploaded_file is not None and uploaded_file0 is not None:
                 df_opativ['Descrição da operação'].append(df_2['OPERAÇÃO: TEXTO CURTO'][i])
                 # df_opativ['Fator de execução'].append(1 if 'FUNC' in df_2['TASK LIST'][i] else 0)
                 df_opativ['Fator de execução'].append(1)
-                df_opativ['NC?'].append(
-                    'NC' if pd.isna(df_2['ID SAP EQUIP OP'][i]) and str('SIM') in str(df_2['ROTA?'][i]) else
-                    df_2['ID SAP EQUIP OP'][i])  # 'NA' SE EQP NÃO SUBIU
+                df_opativ['NC?'].append('NC' if pd.isna(df_2['ID SAP EQUIP OP'][i]) and str('NAO') not in str(df_2['ROTA?'][i]) else df_2['ID SAP EQUIP OP'][i])   # 'NA' SE EQP NÃO SUBIU
 
                 # Checar se está dentro da lista das task list que não irão subir:
                 if df_2['TASK LIST'][i] in lista_nsubir:
@@ -1051,7 +1066,7 @@ if uploaded_file is not None and uploaded_file0 is not None:
                     df_opativ['Sequencial*'][-1] = 'INDICADO PARA NÃO SUBIR'
                 #
 
-                df_opativ['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i] if str('SIM') in str(df_2['ROTA?'][i]) else np.nan)
+                df_opativ['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i] if str('NAO') not in str(df_2['ROTA?'][i]) else np.nan)
                 df_opativ['Chave de cálculo'].append(2)
                 try:
                     df_opativ['Trabalho envolvido na atividade'].append(
@@ -1279,10 +1294,10 @@ if uploaded_file is not None and uploaded_file0 is not None:
         except:
             num_carga = 0
             
-        df_2 = df_tl
-        df_2['ID EQUIP OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['ID EQUIP OP'], np.nan)
-        df_2['ID SAP EQUIP OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['ID SAP EQUIP OP'], np.nan)
-        df_2['EQUIPAMENTO OP'] = np.where(df_2['ROTA?'] == 'SIM', df_2['EQUIPAMENTO OP'], np.nan)
+        df_2 = df_tl.copy()   # *********** ALTERADO 24/05/2024
+        df_2['ID EQUIP OP'] = np.where((df_2['ROTA?'] == 'SIM') | (df_2['ROTA?'] == 'PERSONALIZADO'), df_2['ID EQUIP OP'], np.nan)
+        df_2['ID SAP EQUIP OP'] = np.where((df_2['ROTA?'] == 'SIM') | (df_2['ROTA?'] == 'PERSONALIZADO'), df_2['ID SAP EQUIP OP'], np.nan)
+        df_2['EQUIPAMENTO OP'] = np.where((df_2['ROTA?'] == 'SIM') | (df_2['ROTA?'] == 'PERSONALIZADO'), df_2['EQUIPAMENTO OP'], np.nan)
         
         # df_2 = df_tl.sort_values(by=['TASK LIST','N6/N5'])
         df_2 = df_2.drop_duplicates(subset=['TASK LIST', 'OPERAÇÃO: TEXTO CURTO', 'ID SAP EQUIP OP', 'EQUIPAMENTO OP'],
@@ -1325,9 +1340,7 @@ if uploaded_file is not None and uploaded_file0 is not None:
                 df_opativ_lub['Descrição da operação'].append(df_2['OPERAÇÃO: TEXTO CURTO'][i])
                 # df_opativ['Fator de execução'].append(1 if 'FUNC' in df_2['TASK LIST'][i] else 0)
                 df_opativ_lub['Fator de execução'].append(1)
-                df_opativ_lub['NC?'].append(
-                    'NC' if pd.isna(df_2['ID SAP EQUIP OP'][i]) and str('SIM') in str(df_2['ROTA?'][i]) else
-                    df_2['ID SAP EQUIP OP'][i])
+                df_opativ_lub['NC?'].append('NC' if pd.isna(df_2['ID SAP EQUIP OP'][i]) and str('NAO') not in str(df_2['ROTA?'][i]) else df_2['ID SAP EQUIP OP'][i])
 
                 # Checar se está dentro da lista das task list que não irão subir:
                 if df_2['TASK LIST'][i] in lista_nsubir:
@@ -1335,7 +1348,7 @@ if uploaded_file is not None and uploaded_file0 is not None:
                     df_opativ_lub['Sequencial*'][-1] = 'INDICADO PARA NÃO SUBIR'
                 #
 
-                df_opativ_lub['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i] if str('SIM') in str(df_2['ROTA?'][i]) else np.nan)
+                df_opativ_lub['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i] if str('NAO') not in str(df_2['ROTA?'][i]) else np.nan)
                 df_opativ_lub['Chave de cálculo'].append(2)
                 df_opativ_lub['Trabalho envolvido na atividade'].append(
                     int(df_2['DURAÇÃO (min)'][i]))  ## SOMAR TODAS AS SUBS
@@ -1397,9 +1410,7 @@ if uploaded_file is not None and uploaded_file0 is not None:
                 df_opativ_lub['Descrição da operação'].append(df_2['OPERAÇÃO: TEXTO CURTO'][i])
                 # df_opativ['Fator de execução'].append(1 if 'FUNC' in df_2['TASK LIST'][i] else 0)
                 df_opativ_lub['Fator de execução'].append(1)
-                df_opativ_lub['NC?'].append(
-                    'NC' if pd.isna(df_2['ID SAP EQUIP OP'][i]) and str('SIM') in str(df_2['ROTA?'][i]) else
-                    df_2['ID SAP EQUIP OP'][i])  # 'NA' SE EQP NÃO SUBIU
+                df_opativ_lub['NC?'].append('NC' if pd.isna(df_2['ID SAP EQUIP OP'][i]) and str('NAO') not in str(df_2['ROTA?'][i]) else df_2['ID SAP EQUIP OP'][i])   # 'NA' SE EQP NÃO SUBIU
 
                 # Checar se está dentro da lista das task list que não irão subir:
                 if df_2['TASK LIST'][i] in lista_nsubir:
@@ -1407,7 +1418,7 @@ if uploaded_file is not None and uploaded_file0 is not None:
                     df_opativ_lub['Sequencial*'][-1] = 'INDICADO PARA NÃO SUBIR'
                 #
 
-                df_opativ_lub['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i] if str('SIM') in str(df_2['ROTA?'][i]) else np.nan)
+                df_opativ_lub['N do equipamento'].append(df_2['ID SAP EQUIP OP'][i] if str('NAO') not in str(df_2['ROTA?'][i]) else np.nan)
                 df_opativ_lub['Chave de cálculo'].append(2)
 
                 try:
@@ -1505,9 +1516,7 @@ if uploaded_file is not None and uploaded_file0 is not None:
                 str(df_cabecalho_lub['Chave do grupo de listas de tarefas*'][-1]) + '_' + str(
                     df_cabecalho_lub['Contador de grupos*'][-1]))
 
-            df_cabecalho_lub['NC?'].append(
-                'NC' if pd.isna(df_1['ID SAP EQUIP OP'][i]) and str('SIM') in df_1['ROTA?'][i] else
-                df_1['ID SAP EQUIP OP'][i])  # 'NA' SE EQP NÃO SUBIU
+            df_cabecalho_lub['NC?'].append('NC' if pd.isna(df_1['ID SAP EQUIP OP'][i]) and str('NAO') not in df_1['ROTA?'][i] else df_1['ID SAP EQUIP OP'][i])   # 'NA' SE EQP NÃO SUBIU
 
             # Checar se está dentro da lista das task list que não irão subir:
             if df_1['TASK LIST'][i] in lista_nsubir:
