@@ -432,8 +432,19 @@ if uploaded_file1 is not None and uploaded_file2 is not None and uploaded_file0 
         LSMW_ADD_PM_ITEM = LSMW_ADD_PM[LSMW_ADD_PM['indice_pm'] != 1].copy().reset_index(drop=True)
         LSMW_ADD_PM1 = LSMW_ADD_PM
         LSMW_ADD_PM = LSMW_ADD_PM[LSMW_ADD_PM['indice_pm'] == 1].copy().reset_index(drop=True)
+
+        ###
+
+        #   Fazer concat group + equipment or functional location - Incluído 05/06/2024
+
+        LSMW_ADD_PM['CONCAT TL_EQP'] = np.where(  # Incluído 05/06/2024
+          LSMW_ADD_PM['Nº equipamento'].notna(),  # condição: se 'Equipment' não for NaN
+          LSMW_ADD_PM["Chave para grupo de listas de tarefas"].map(str) + LSMW_ADD_PM["Nº equipamento"].map(str),  # se verdadeiro: group + equipment
+          LSMW_ADD_PM["Chave para grupo de listas de tarefas"].map(str) + LSMW_ADD_PM["Local de instalação"].map(str)  # se falso: group + functional location
+        )
         
-        
+        #
+
         ############################
 
         import io
@@ -524,11 +535,16 @@ if uploaded_file1 is not None and uploaded_file2 is not None and uploaded_file0 
         
         
         # Verificar itens que já subiram
-        
+
         indice_inserir_coluna = LSMW_ADD_ITEM.columns.get_loc(LSMW_ADD_ITEM.columns[-1]) + 1
         LSMW_ADD_ITEM.insert(loc=indice_inserir_coluna, column='carregado?', value=np.nan)
         
-        LSMW_ADD_ITEM['CONCAT'] = LSMW_ADD_ITEM["Chave para grupo de listas de tarefas"].map(str, na_action=None) + LSMW_ADD_ITEM["Nº equipamento"].map(str, na_action='ignore')
+        LSMW_ADD_ITEM['CONCAT'] = np.where(  # Incluído 05/06/2024
+          LSMW_ADD_ITEM['Nº equipamento'].notna(),  # condição: se 'Equipment' não for NaN
+          LSMW_ADD_ITEM["Chave para grupo de listas de tarefas"].map(str) + LSMW_ADD_ITEM["Nº equipamento"].map(str),  # se verdadeiro: group + equipment
+          LSMW_ADD_ITEM["Chave para grupo de listas de tarefas"].map(str) + LSMW_ADD_ITEM["Local de instalação"].map(str)  # se falso: group + functional location
+        )
+        
         
         for i in range(len(LSMW_ADD_ITEM['carregado?'])):
           #try:
@@ -538,9 +554,16 @@ if uploaded_file1 is not None and uploaded_file2 is not None and uploaded_file0 
             index_procurado = SAP_PMI[SAP_PMI['CONCAT TL_EQP'] == valor_procurado].index
             if not index_procurado.empty and not pd.isna(valor_procurado):
                 LSMW_ADD_ITEM.at[i, 'carregado?'] = SAP_PMI.at[index_procurado[0], 'Maintenance Item']
+        
+          if LSMW_ADD_ITEM['CONCAT'][i] in LSMW_ADD_PM['CONCAT TL_EQP'].values:   # Para o ADD_PM - Incluído 05/06/2024
+            valor_procurado = LSMW_ADD_ITEM['CONCAT'][i]
+            index_procurado = LSMW_ADD_PM[LSMW_ADD_PM['CONCAT TL_EQP'] == valor_procurado].index
+            if not index_procurado.empty and not pd.isna(valor_procurado):
+                LSMW_ADD_ITEM.at[i, 'carregado?'] = LSMW_ADD_PM.at[index_procurado[0], 'CONCAT TL_EQP']
           #except:
            # pass
         
+        LSMW_ADD_ITEM.drop_duplicates(inplace=True)#.reset_index(drop = True)    # Incluído 05/06/2024
         
         LSMW_ADD_ITEM_NOVO = LSMW_ADD_ITEM[pd.isna(LSMW_ADD_ITEM['carregado?'])]
         LSMW_ADD_ITEM_EXIS = LSMW_ADD_ITEM[~pd.isna(LSMW_ADD_ITEM['carregado?'])]
