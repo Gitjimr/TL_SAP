@@ -80,6 +80,13 @@ if uploaded_file0 is not None:
             SAP_ITEM = pd.read_excel(uploaded_file0, sheet_name="IP18", skiprows=0, dtype=str)
         with st.spinner('Carregando IP24 SAP...'):
             SAP_PMI = pd.read_excel(uploaded_file0, sheet_name="IP24", skiprows=0, dtype=str)
+            SAP_PMI['CONCAT CENTRO_DESC'] = SAP_PMI["Planning Plant"].map(str, na_action=None) + SAP_PMI["Maintenance Plan Desc"].map(str, na_action='ignore')
+            SAP_PMI['CONCAT TL_EQP'] = np.where(  # Incluído 05/06/2024
+                SAP_PMI['Equipment'].notna(),  # condição: se 'Equipment' não for NaN
+                SAP_PMI["Group"].map(str) + SAP_PMI["Equipment"].map(str),  # se verdadeiro: group + equipment
+                SAP_PMI["Group"].map(str) + SAP_PMI["Functional Location"].map(str)  # se falso: group + functional location
+            )
+            SAP_PMI = pd.DataFrame(SAP_PMI)
         with st.spinner('Carregando Centros de Trabalho SAP...'):
             SAP_CTPM = pd.read_excel(uploaded_file0, sheet_name="CTPM", skiprows=0, dtype=str)
         with st.spinner('Carregando Materiais SAP...'):
