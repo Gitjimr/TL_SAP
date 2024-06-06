@@ -59,6 +59,14 @@ def cortar_string(string):
     result_string = ' '.join(palavras)
     return result_string
 
+prcnt_width = 80
+max_width_str = f"max-width: {prcnt_width}%;"
+st.markdown(f""" 
+            <style> 
+            .reportview-container .main .block-container{{{max_width_str}}}
+            </style>    
+            """,
+            unsafe_allow_html=True)
 
 #
 import os
@@ -557,6 +565,8 @@ if uploaded_file is not None and uploaded_file0 is not None:
                 if str(df['ROTA?'][i]) == 'SIM':
                     df['TASK LIST'][i] = df['TASK LIST_PARCIAL'][i] + ' ' + df['DESC SISTEMAS / ETAPAS PROCESS'][
                         i] + ' ' + df['LINHAS / DIAG / SUB PROCESS'][i]
+                if str(df['ROTA?'][i]) == 'PERSONALIZADO':
+                    df['TASK LIST'][i] = df['TASK LIST_PARCIAL'][i]
             ##
 
             df = df.drop('TASK LIST_PARCIAL', axis=1)
