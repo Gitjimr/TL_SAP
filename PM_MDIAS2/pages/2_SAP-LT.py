@@ -16,6 +16,16 @@ def checagem_df(df):
     df = df.reset_index(drop=True)
 
     return df
+
+prcnt_width = 80
+max_width_str = f"max-width: {prcnt_width}%;"
+st.markdown(f""" 
+            <style> 
+            .reportview-container .main .block-container{{{max_width_str}}}
+            </style>    
+            """,
+            unsafe_allow_html=True)
+
 import os
 
 path = os.path.dirname(__file__)
