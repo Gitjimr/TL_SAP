@@ -7,6 +7,47 @@ st.session_state.update(st.session_state)
 for k, v in st.session_state.items():
     st.session_state[k] = v
 
+hide_menu = '''
+        <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        </style>
+'''
+st.markdown(hide_menu, unsafe_allow_html=True)
+
+st.markdown(
+    """
+    <style>
+    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob,
+    .styles_viewerBadge__1yB5_, .viewerBadge_link__1S137,
+    .viewerBadge_text__1JaDK {
+        display: none;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    """
+    <style>
+    .st-emotion-cache-ch5dnh
+    {
+        visibility: hidden;
+    }
+    .st-emotion-cache-q16mip
+    {
+        visibility: hidden;
+    }
+    .st-emotion-cache-ztfqz8
+    {
+        visibility: hidden;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Função para realizar checagem: Exluir linhas completamente nulas, duplicatas e resetar o índice
 
 def checagem_df(df):
